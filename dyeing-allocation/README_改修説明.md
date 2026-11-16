@@ -67,7 +67,7 @@ v2 での各操作のExcel呼び出し回数（概算）：
   * Data を `Range.Value` で1回だけ読み込み、窯ごとの並び順（Queue → ID の順）をメモリ上で作成。
   * 空のカードテンプレートを `BoardMap!A22:C33` に自動生成し、1枚ごとに `Copy` してから値を12×3の配列で1回で書き込む。
   * 変更前後の BoardMap を比べ、位置・内容が変わったカードだけ描き直す（差分再描画）。
-  * `ScreenUpdating`・`EnableEvents`・`Calculation` を処理中だけ止め、**エラーが起きても必ず元に戻す**（全ボタン共通の `FastOn` / `Finish`）。万一の復旧用に `ResetExcelSettings` マクロも用意。
+  * 処理の開始時に `ScreenUpdating`・`EnableEvents`・`Calculation`・`Cursor`・`StatusBar` の **現在の値を保存** し、終了時に（エラー時も）**保存した値をそのまま戻す**（全ボタン共通の `FastOn` / `Finish`）。手動計算などユーザーの設定は変えない。強制的に既定値（画面更新ON・イベントON・自動計算）へ戻したい場合だけ `ResetExcelSettings` マクロを使う。
 * **整合性**
   * 状態セルを **`BoardMap!B18`（モード）と `B19`（描画済み列数）** に移動し、マップと重ならないようにした（O2/O3 は使わない）。
   * 窯名の比較を「前後の空白を除き、大文字小文字を区別しない」に統一。保存時は BoardMap の正式な表記で書き込む。
